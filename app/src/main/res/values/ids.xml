@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="createAccountTextView" type="id" />
+    <item name="firstNameEditText" type="id" />
+    <item name="lastNameEditText" type="id" />
+    <item name="dobTextView" type="id" />
+    <item name="dobDaySpinner" type="id" />
+    <item name="dobMonthSpinner" type="id" />
+    <item name="dobYearSpinner" type="id" />
+    <item name="providerTextView" type="id" />
+    <item name="providerYesCheckBox" type="id" />
+    <item name="providerNoCheckBox" type="id" />
+    <item name="emailEditText" type="id" />
+    <item name="welcomeTextView" type="id" />
+    <item name="selectTextView" type="id" />
+    <item name="emotionsWheelImageView" type="id" />
+    <item name="dropDownTextView" type="id" />
+    <item name="backButton" type="id" />
+    <item name="submitButton" type="id" />
+    <item name="exercisesTitle" type="id" />
+    <item name="breathingExerciseButton" type="id" />
+    <item name="otherExercisesButton" type="id" />
+    <item name="recommendedFoodsButton" type="id" />
+    <item name="watchVideoButton" type="id" />
+</resources>

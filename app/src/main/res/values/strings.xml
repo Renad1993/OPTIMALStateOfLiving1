@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">OPTIMALStateOfLiving</string>
+    <string name="logo">Logo</string>
+    <string name="create_account">Create Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="dob">DOB</string>
+    <string name="provider">Provider</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="user_icon">User Icon</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="new_user">New User</string>
+    <string name="exercises">Exercises</string>
+    <string name="breathing_exercise">Breathing Exercise</string>
+    <string name="other_exercises">Other Exercises</string>
+    <string name="recommended_foods">Recommended Foods</string>
+    <string name="watch_video">Watch Video</string>
+    <string name="welcome_user">Welcome</string>
+    <string name="take_assessment">Take Assessment</string>
+    <string name="view_current_exercises">View Current Exercises</string>
+    <string name="view_history">View History</string>
+    <string name="settings">Settings</string>
+
+</resources>

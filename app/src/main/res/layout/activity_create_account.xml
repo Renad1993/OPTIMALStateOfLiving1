@@ -1,0 +1,146 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAccountActivity">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="410dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="44dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/createAccountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/create_account"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoImageView" />
+
+    <EditText
+        android:id="@+id/firstNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints="firstName"
+        android:hint="@string/first_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/lastNameEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/createAccountTextView" />
+
+    <EditText
+        android:id="@+id/lastNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="lastName"
+        android:hint="@string/last_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/firstNameEditText"
+        app:layout_constraintTop_toBottomOf="@id/createAccountTextView" />
+
+    <TextView
+        android:id="@+id/dobTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/dob"
+        app:layout_constraintStart_toStartOf="@id/firstNameEditText"
+        app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
+
+    <Spinner
+        android:id="@+id/dobDaySpinner"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/dobMonthSpinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+
+    <Spinner
+        android:id="@+id/dobMonthSpinner"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/dobYearSpinner"
+        app:layout_constraintStart_toEndOf="@+id/dobDaySpinner"
+        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+
+    <Spinner
+        android:id="@+id/dobYearSpinner"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dobMonthSpinner"
+        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+
+    <TextView
+        android:id="@+id/providerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/provider"
+        app:layout_constraintStart_toStartOf="@id/firstNameEditText"
+        app:layout_constraintTop_toBottomOf="@id/dobDaySpinner" />
+
+    <CheckBox
+        android:id="@+id/providerYesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/yes"
+        app:layout_constraintStart_toStartOf="@id/providerTextView"
+        app:layout_constraintTop_toBottomOf="@id/providerTextView" />
+
+    <CheckBox
+        android:id="@+id/providerNoCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/no"
+        app:layout_constraintStart_toEndOf="@id/providerYesCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/providerTextView" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="380dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:autofillHints="emailAddress"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/providerYesCheckBox" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="380dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
