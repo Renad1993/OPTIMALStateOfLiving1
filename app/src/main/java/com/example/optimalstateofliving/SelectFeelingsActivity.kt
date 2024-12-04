@@ -14,14 +14,15 @@ class SelectFeelingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feelings)
 
-        // ربط الدوائر من XML
+
         val centerBubble = findViewById<CardView>(R.id.center_bubble)
         val topBubble = findViewById<CardView>(R.id.top_bubble)
         val rightBubble = findViewById<CardView>(R.id.right_bubble)
         val leftBubble = findViewById<CardView>(R.id.left_bubble)
         val submitButton = findViewById<Button>(R.id.button2)
+        val backButton = findViewById<Button>(R.id.button)
 
-        // وظيفة لإنشاء حركة (Animation) للدائرة
+        // function to create the Animation
         fun animateBubble(bubble: CardView) {
             val scaleUpX = ObjectAnimator.ofFloat(bubble, "scaleX", 1.0f, 1.5f, 1.0f)
             val scaleUpY = ObjectAnimator.ofFloat(bubble, "scaleY", 1.0f, 1.5f, 1.0f)
@@ -33,30 +34,35 @@ class SelectFeelingsActivity : AppCompatActivity() {
             animatorSet.start()
         }
 
-        // إعداد الأحداث عند النقر على الدوائر
+        // Setting events when you click on Circles
         centerBubble.setOnClickListener {
-            animateBubble(centerBubble) // تشغيل الحركة
+            animateBubble(centerBubble)
             Toast.makeText(this, "You clicked the Center Bubble!", Toast.LENGTH_SHORT).show()
         }
 
         topBubble.setOnClickListener {
-            animateBubble(topBubble) // تشغيل الحركة
+            animateBubble(topBubble)
             Toast.makeText(this, "You clicked the Top Bubble!", Toast.LENGTH_SHORT).show()
         }
 
         rightBubble.setOnClickListener {
-            animateBubble(rightBubble) // تشغيل الحركة
+            animateBubble(rightBubble)
             Toast.makeText(this, "You clicked the Right Bubble!", Toast.LENGTH_SHORT).show()
         }
 
         leftBubble.setOnClickListener {
-            animateBubble(leftBubble) // تشغيل الحركة
+            animateBubble(leftBubble)
             Toast.makeText(this, "You clicked the Left Bubble!", Toast.LENGTH_SHORT).show()
         }
 
         submitButton.setOnClickListener {
             val intent = Intent(this, ExercisesActivity::class.java)
-            startActivity(intent) // الانتقال إلى الشاشة التالية
+            startActivity(intent) // move to the next screen
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent) // move to the next screen
         }
 
     }
