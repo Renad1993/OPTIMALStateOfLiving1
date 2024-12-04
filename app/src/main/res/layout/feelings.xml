@@ -1,12 +1,12 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#FBFBFB"
     tools:context=".MainActivity">
 
+    <!-- الدائرة المركزية -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,22 +19,24 @@
         android:textStyle="normal|italic"
         app:layout_constraintBottom_toTopOf="@+id/center_bubble"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.247" />
 
-    <!-- الدائرة المركزية -->
     <androidx.cardview.widget.CardView
         android:id="@+id/center_bubble"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:cardCornerRadius="75dp"
-        app:cardElevation="10dp"
         android:layout_margin="8dp"
         android:backgroundTint="#FD9B63"
-        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,21 +57,21 @@
         android:id="@+id/top_bubble"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="8dp"
         android:layout_margin="8dp"
         android:backgroundTint="#FFFFFF"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@id/center_bubble"
-        app:layout_constraintStart_toStartOf="@id/center_bubble"
-        app:layout_constraintEnd_toEndOf="@id/center_bubble">
+        app:layout_constraintEnd_toEndOf="@id/center_bubble"
+        app:layout_constraintStart_toStartOf="@id/center_bubble">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Top"
-            android:textSize="14sp"
             android:textColor="#000000"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -78,21 +80,21 @@
         android:id="@+id/right_bubble"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="8dp"
         android:layout_margin="8dp"
         android:backgroundTint="#604CC3"
-        app:layout_constraintTop_toTopOf="@id/center_bubble"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="@id/center_bubble"
-        app:layout_constraintStart_toEndOf="@id/center_bubble">
+        app:layout_constraintStart_toEndOf="@id/center_bubble"
+        app:layout_constraintTop_toTopOf="@id/center_bubble">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Right"
-            android:textSize="14sp"
             android:textColor="#000000"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -101,21 +103,21 @@
         android:id="@+id/left_bubble"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="8dp"
         android:layout_margin="8dp"
         android:backgroundTint="#C80036"
-        app:layout_constraintTop_toTopOf="@id/center_bubble"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="@id/center_bubble"
-        app:layout_constraintEnd_toStartOf="@id/center_bubble">
+        app:layout_constraintEnd_toStartOf="@id/center_bubble"
+        app:layout_constraintTop_toTopOf="@id/center_bubble">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Left"
-            android:textSize="14sp"
             android:textColor="#FFFFFF"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -140,6 +142,23 @@
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine2"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="44dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Drop down screen to display all feelings associated with selection "
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,9 @@ package com.example.optimalstateofliving
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -17,6 +19,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
         val topBubble = findViewById<CardView>(R.id.top_bubble)
         val rightBubble = findViewById<CardView>(R.id.right_bubble)
         val leftBubble = findViewById<CardView>(R.id.left_bubble)
+        val submitButton = findViewById<Button>(R.id.button2)
 
         // وظيفة لإنشاء حركة (Animation) للدائرة
         fun animateBubble(bubble: CardView) {
@@ -50,5 +53,11 @@ class SelectFeelingsActivity : AppCompatActivity() {
             animateBubble(leftBubble) // تشغيل الحركة
             Toast.makeText(this, "You clicked the Left Bubble!", Toast.LENGTH_SHORT).show()
         }
+
+        submitButton.setOnClickListener {
+            val intent = Intent(this, ExercisesActivity::class.java)
+            startActivity(intent) // الانتقال إلى الشاشة التالية
+        }
+
     }
 }
