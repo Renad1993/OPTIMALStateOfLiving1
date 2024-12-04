@@ -1,53 +1,145 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectFeelingsActivity">
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
 
-    <!-- عنوان الشاشة -->
     <TextView
-        android:id="@+id/selectTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="60dp"
         android:text="Select All That Apply"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:textStyle="normal|italic"
+        app:layout_constraintBottom_toTopOf="@+id/center_bubble"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- كلمة قابلة للسحب -->
-    <TextView
-        android:id="@+id/wordHappy"
+    <!-- الدائرة المركزية -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/center_bubble"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="10dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="#FD9B63"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="145dp"
+            tools:layout_editor_absoluteY="164dp" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <!-- الدائرة العلوية -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/top_bubble"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@id/center_bubble"
+        app:layout_constraintStart_toStartOf="@id/center_bubble"
+        app:layout_constraintEnd_toEndOf="@id/center_bubble">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Top"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- الدائرة اليمنى -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/right_bubble"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="#604CC3"
+        app:layout_constraintTop_toTopOf="@id/center_bubble"
+        app:layout_constraintBottom_toBottomOf="@id/center_bubble"
+        app:layout_constraintStart_toEndOf="@id/center_bubble">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Right"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- الدائرة اليسرى -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/left_bubble"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="8dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="#C80036"
+        app:layout_constraintTop_toTopOf="@id/center_bubble"
+        app:layout_constraintBottom_toBottomOf="@id/center_bubble"
+        app:layout_constraintEnd_toStartOf="@id/center_bubble">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Left"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_green_light"
-        android:padding="8dp"
-        android:text="Happy"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectTextView" />
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="56dp"
+        android:backgroundTint="#FD9B63"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- مستطيل الإسقاط -->
-    <TextView
-        android:id="@+id/dropRectangle"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_blue_light"
-        android:gravity="center"
-        android:text="Drop Here"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wordHappy" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="56dp"
+        android:backgroundTint="#FD9B63"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
