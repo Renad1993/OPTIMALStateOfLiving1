@@ -64,31 +64,31 @@
         app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
 
     <Spinner
-        android:id="@+id/dobDaySpinner"
+        android:id="@+id/spinnerDay"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/dobMonthSpinner"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerMonth"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dobTextView" />
 
     <Spinner
-        android:id="@+id/dobMonthSpinner"
+        android:id="@+id/spinnerMonth"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/dobYearSpinner"
-        app:layout_constraintStart_toEndOf="@+id/dobDaySpinner"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerYear"
+        app:layout_constraintStart_toEndOf="@+id/spinnerDay"
         app:layout_constraintTop_toBottomOf="@id/dobTextView" />
 
     <Spinner
-        android:id="@+id/dobYearSpinner"
+        android:id="@+id/spinnerYear"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dobMonthSpinner"
+        app:layout_constraintStart_toEndOf="@+id/spinnerMonth"
         app:layout_constraintTop_toBottomOf="@id/dobTextView" />
 
     <TextView
@@ -98,38 +98,19 @@
         android:layout_marginTop="16dp"
         android:text="@string/provider"
         app:layout_constraintStart_toStartOf="@id/firstNameEditText"
-        app:layout_constraintTop_toBottomOf="@id/dobDaySpinner" />
-
-    <CheckBox
-        android:id="@+id/providerYesCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/yes"
-        app:layout_constraintStart_toStartOf="@id/providerTextView"
-        app:layout_constraintTop_toBottomOf="@id/providerTextView" />
-
-    <CheckBox
-        android:id="@+id/providerNoCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/no"
-        app:layout_constraintStart_toEndOf="@id/providerYesCheckBox"
-        app:layout_constraintTop_toBottomOf="@id/providerTextView" />
+        app:layout_constraintTop_toBottomOf="@id/spinnerDay" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="380dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
         android:autofillHints="emailAddress"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/providerYesCheckBox" />
+        app:layout_constraintTop_toBottomOf="@id/rgOptions" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -142,5 +123,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+    <Button
+        android:id="@+id/btnsingup"
+        android:layout_width="376dp"
+        android:layout_height="43dp"
+        android:text="@string/singup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+        app:layout_constraintVertical_bias="0.237" />
+
+    <RadioGroup
+        android:id="@+id/rgOptions"
+        android:layout_width="326dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/emailEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.188"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/providerTextView"
+        app:layout_constraintVertical_bias="1.0">
+
+        <RadioButton
+            android:id="@+id/rbYes"
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:text="Yes" />
+
+        <RadioButton
+            android:id="@+id/rbNo"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="No" />
+    </RadioGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
     <string name="user_icon">User Icon</string>
     <string name="password_icon">Password Icon</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="new_user">New User</string>
+    <string name="singup">sing up</string>
     <string name="exercises">Exercises</string>
     <string name="breathing_exercise">Breathing Exercise</string>
     <string name="other_exercises">Other Exercises</string>
@@ -25,5 +25,6 @@
     <string name="view_current_exercises">View Current Exercises</string>
     <string name="view_history">View History</string>
     <string name="settings">Settings</string>
+    <string name="singin">sing in</string>
 
 </resources>
