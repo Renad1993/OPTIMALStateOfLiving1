@@ -2,6 +2,7 @@ package com.example.optimalstateofliving
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
+        val ActivitySignUpBinding = null
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -84,4 +86,4 @@ class CreateAccountActivity : AppCompatActivity() {
         binding.spinnerYear.adapter = yearAdapter
     }
 }
-}
+
