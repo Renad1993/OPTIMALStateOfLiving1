@@ -2,9 +2,12 @@ package com.example.optimalstateofliving
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.optimalstateofliving.databinding.ActivityCreateAccountBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Calendar
 
 class CreateAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateAccountBinding
