@@ -10,6 +10,7 @@ import com.example.optimalstateofliving.databinding.ActivityCreateAccountBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
+
 class CreateAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateAccountBinding
     private lateinit var firebaseAuth: FirebaseAuth
@@ -18,8 +19,9 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        val ActivitySignUpBinding = null
-        binding = ActivitySignUpBinding.inflate(layoutInflater)
+
+        binding = ActivityCreateAccountBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()

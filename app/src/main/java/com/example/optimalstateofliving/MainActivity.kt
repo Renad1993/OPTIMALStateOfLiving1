@@ -1,7 +1,9 @@
 package com.example.optimalstateofliving
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val singinButton = findViewById<Button>(R.id.btsingin)
 
 
 
@@ -27,6 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize Firebase Realtime Database
         firebaseDatabase = FirebaseDatabase.getInstance()
+
+        singinButton.setOnClickListener {
+            try {
+                val intent = Intent(this, WelcomeActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error starting WelcomeActivity: ${e.message}")
+            }
+        }
 
         // Test writing to Firebase Database
         firebaseDatabase.getReference("test").setValue("Test Value")
