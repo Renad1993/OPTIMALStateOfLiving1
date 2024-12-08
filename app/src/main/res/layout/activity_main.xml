@@ -67,7 +67,7 @@
         android:id="@+id/forgotPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="90dp"
         android:layout_marginEnd="4dp"
         android:text="@string/forgot_password"
         android:textColor="@android:color/holo_blue_dark"
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="90dp"
         android:text="@string/singup"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintStart_toStartOf="@id/passwordEditText"
@@ -106,17 +106,20 @@
     <Button
         android:id="@+id/btsingin"
         android:layout_width="268dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="44dp"
+        android:clickable="true"
         android:focusable="true"
         android:text="@string/singin"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/forgotPasswordTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.433"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
+        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordIcon"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
