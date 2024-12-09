@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -19,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val singinButton = findViewById<Button>(R.id.btsingin)
-
-
+        // ربط TextView من XML
+        val textViewClickable: TextView = findViewById(R.id.newUserTextView)
 
         // Initialize Firebase Analytics
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -38,6 +39,12 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error starting WelcomeActivity: ${e.message}")
             }
+        }
+
+
+        textViewClickable.setOnClickListener {
+            val intent = Intent(this, CreateAccountActivity::class.java)
+            startActivity(intent)
         }
 
         // Test writing to Firebase Database
