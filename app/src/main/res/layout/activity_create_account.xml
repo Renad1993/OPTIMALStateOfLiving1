@@ -56,65 +56,60 @@
 
     <TextView
         android:id="@+id/dobTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="58dp"
         android:text="@string/dob"
-        app:layout_constraintStart_toStartOf="@id/firstNameEditText"
+        app:layout_constraintRight_toLeftOf="@+id/spinnerDay"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
 
     <Spinner
         android:id="@+id/spinnerDay"
-        android:layout_width="100dp"
+        android:layout_width="60dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="@+id/spinnerMonth"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+        app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
 
     <Spinner
         android:id="@+id/spinnerMonth"
-        android:layout_width="100dp"
+        android:layout_width="60dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toStartOf="@+id/spinnerYear"
         app:layout_constraintStart_toEndOf="@+id/spinnerDay"
-        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+        app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
 
     <Spinner
         android:id="@+id/spinnerYear"
-        android:layout_width="100dp"
+        android:layout_width="60dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/spinnerMonth"
-        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+        app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
 
-    <TextView
-        android:id="@+id/providerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/provider"
-        app:layout_constraintStart_toStartOf="@id/firstNameEditText"
-        app:layout_constraintTop_toBottomOf="@id/spinnerDay" />
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_width="380dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
+        android:layout_marginTop="48dp"
         android:autofillHints="emailAddress"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rgOptions" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_width="380dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:hint="@string/password"
@@ -126,8 +121,8 @@
 
     <Button
         android:id="@+id/btnsingup"
-        android:layout_width="376dp"
-        android:layout_height="43dp"
+        android:layout_width="360dp"
+        android:layout_height="52dp"
         android:text="@string/singup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,28 +131,41 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
         app:layout_constraintVertical_bias="0.237" />
 
+    <TextView
+        android:id="@+id/providerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/provider"
+        app:layout_constraintRight_toLeftOf="@id/rgOptions"
+        app:layout_constraintTop_toBottomOf="@id/dobTextView" />
+
     <RadioGroup
         android:id="@+id/rgOptions"
-        android:layout_width="326dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/emailEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.188"
+        app:layout_constraintLeft_toRightOf="@+id/providerTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/providerTextView"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@id/spinnerYear">
 
         <RadioButton
             android:id="@+id/rbYes"
-            android:layout_width="132dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Yes" />
 
         <RadioButton
             android:id="@+id/rbNo"
-            android:layout_width="140dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="No" />
     </RadioGroup>
