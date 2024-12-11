@@ -4,95 +4,100 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var databaseRef: DatabaseReference
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var signUpUser: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
-        val singinButton = findViewById<Button>(R.id.btsingin)
-        // ربط TextView من XML
-        val textViewClickable: TextView = findViewById(R.id.newUserTextView)
 
-        // Initialize Firebase Analytics
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        // Initialize Firebase Authentication
-        firebaseAuth = FirebaseAuth.getInstance()
+        // ربط العناصر مع واجهة المستخدم
+        emailEditText = findViewById(R.id.usernameEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+        loginButton = findViewById(R.id.btsingin)
+        signUpUser = findViewById(R.id.newUserTextView)
 
-        // Initialize Firebase Realtime Database
-        firebaseDatabase = FirebaseDatabase.getInstance()
+        // مرجع قاعدة البيانات
+        databaseRef = FirebaseDatabase.getInstance().getReference("_user")
 
-        singinButton.setOnClickListener {
-            try {
-                val intent = Intent(this, WelcomeActivity::class.java)
-                startActivity(intent)
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Error starting WelcomeActivity: ${e.message}")
+        // الحدث عند الضغط على زر تسجيل الدخول
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                login(email, password)
+            } else {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
         }
 
-
-        textViewClickable.setOnClickListener {
+        // الانتقال إلى شاشة تسجيل حساب جديد
+        signUpUser.setOnClickListener {
             val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
         }
-
-        // Test writing to Firebase Database
-        firebaseDatabase.getReference("test").setValue("Test Value")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("FirebaseDatabase", "Test value saved successfully!")
-                } else {
-                    Log.e("FirebaseDatabase", "Error: ${task.exception?.message}")
-                }
-            }
-
-        // Create a new user
-        createNewUser("testuser@example.com", "password123")
     }
 
-    private fun createNewUser(email: String, password: String) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val userId = task.result?.user?.uid
-                    Log.d("FirebaseAuth", "User created successfully with ID: $userId")
+    private fun login(email: String, password: String) {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var isUserFound = false
 
-                    // Save user data to Realtime Database
-                    userId?.let {
-                        saveUserToDatabase(it, "Test User", email)
+                for (userSnapshot in snapshot.children) {
+                    val storedEmail = userSnapshot.child("email").getValue(String::class.java)?.trim()
+                    val storedPassword = userSnapshot.child("password").getValue()?.toString()?.trim()
+
+                    Log.d("Login", "Entered Email: $email, Stored Email: $storedEmail")
+                    Log.d("Login", "Entered Password: $password, Stored Password: $storedPassword")
+
+                    if (storedEmail?.equals(email, ignoreCase = true) == true) {
+                        isUserFound = true
+                        if (storedPassword == password) {
+                            val role = userSnapshot.child("role").getValue(String::class.java)?.trim()
+                            Log.d("Login", "User role: $role")
+
+                            if (role == "client") {
+                                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else if (role == "provider") {
+                                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(this@MainActivity, "Unknown role", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this@MainActivity, "Invalid Password", Toast.LENGTH_SHORT).show()
+                        }
+                        break
                     }
-                } else {
-                    Log.e("FirebaseAuth", "Error creating user: ${task.exception?.message}")
+                }
+
+                if (!isUserFound) {
+                    Toast.makeText(this@MainActivity, "User not found", Toast.LENGTH_SHORT).show()
                 }
             }
-    }
 
-    private fun saveUserToDatabase(userId: String, name: String, email: String) {
-        val userRef = firebaseDatabase.getReference("users").child(userId)
-
-        val userData = mapOf(
-            "name" to name,
-            "email" to email
-        )
-
-        userRef.setValue(userData)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("FirebaseDatabase", "User data saved successfully!")
-                } else {
-                    Log.e("FirebaseDatabase", "Error saving user data: ${task.exception?.message}")
-                }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
+        })
     }
+
 }
