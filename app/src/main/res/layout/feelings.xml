@@ -41,7 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Center"
+            android:text="Patient\nConfident"
+            android:lineSpacingExtra="2dp"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -55,8 +57,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/top_bubble"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_margin="8dp"
         android:backgroundTint="#FFFFFF"
         app:cardCornerRadius="50dp"
@@ -69,17 +71,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Top"
+            android:text="Lonely\nIsolated\nLack of Support"
+            android:lineSpacingExtra="2dp"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold" />
+
     </androidx.cardview.widget.CardView>
 
     <!-- الدائرة اليمنى -->
     <androidx.cardview.widget.CardView
         android:id="@+id/right_bubble"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_margin="8dp"
         android:backgroundTint="#604CC3"
         app:cardCornerRadius="50dp"
@@ -92,7 +97,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Right"
+            android:text="Depressed\nLow Energy"
+            android:lineSpacingExtra="2dp"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -101,8 +108,8 @@
     <!-- الدائرة اليسرى -->
     <androidx.cardview.widget.CardView
         android:id="@+id/left_bubble"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_margin="8dp"
         android:backgroundTint="#C80036"
         app:cardCornerRadius="50dp"
@@ -115,7 +122,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Left"
+            android:text="Anger\nJudgement"
+            android:lineSpacingExtra="2dp"
+            android:singleLine="false"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -153,7 +162,9 @@
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:gravity="start|top"
+        android:textColor="#000000"
         android:hint="Drop down screen to display all feelings associated with selection "
+        android:textSize="16sp"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
