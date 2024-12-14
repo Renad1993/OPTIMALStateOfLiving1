@@ -66,17 +66,23 @@ class MainActivity : AppCompatActivity() {
                         databaseRef.child(userId).get().addOnSuccessListener { snapshot ->
                             if (snapshot.exists()) {
                                 val role = snapshot.child("role").getValue(String::class.java)
-                                if (role == "client") {
-                                    val intent = Intent(this, WelcomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                } else if (role == "provider") {
-                                    val intent = Intent(this, ProviderActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
+                                val firstName = snapshot.child("FirstName").getValue(String::class.java)?.trim()
+                                val lastName = snapshot.child("LastName").getValue(String::class.java)?.trim()
+                                val intent = if (role == "client") {
+                                    Intent(this, WelcomeActivity::class.java)
+
                                 } else {
-                                    Toast.makeText(this, "Unknown role", Toast.LENGTH_SHORT).show()
+                                    Intent(this, ProviderActivity::class.java)
+
                                 }
+
+                                // تمرير البيانات إلى النشاط التالي
+                                intent.putExtra("FirstName", firstName)
+                                intent.putExtra("LastName", lastName)
+                                intent.putExtra("Role", role)
+
+                                startActivity(intent)
+                                finish()
                             } else {
                                 Toast.makeText(this, "User data not found in database.", Toast.LENGTH_SHORT).show()
                             }

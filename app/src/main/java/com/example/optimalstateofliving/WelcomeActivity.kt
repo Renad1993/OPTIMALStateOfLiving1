@@ -3,6 +3,7 @@ package com.example.optimalstateofliving
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.optimalstateofliving.databinding.ActivityCreateAccountBinding
 
@@ -16,6 +17,13 @@ class WelcomeActivity: AppCompatActivity() {
         val viewExercisesButton = findViewById<Button>(R.id.viewExercisesButton)
         val viewHistoryButton = findViewById<Button>(R.id.viewHistoryButton)
         val settingsButton = findViewById<Button>(R.id.settingsButton)
+
+        val firstName = intent.getStringExtra("FirstName")
+        val lastName = intent.getStringExtra("LastName")
+        val role = intent.getStringExtra("Role")
+        val welcomeTextView = findViewById<TextView>(R.id.welcomeTextView)
+        welcomeTextView.text = "Welcome $firstName $lastName"
+
 
 
         takeAssesmentButton.setOnClickListener {
