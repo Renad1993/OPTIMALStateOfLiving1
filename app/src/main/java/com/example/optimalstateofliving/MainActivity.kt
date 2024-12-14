@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
+
 
         // ربط العناصر مع واجهة المستخدم
         emailEditText = findViewById(R.id.usernameEditText)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                loginWithFirebaseAuth(email, password)
+                login(email, password)
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
@@ -53,41 +53,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginWithFirebaseAuth(email: String, password: String) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    if (currentUser != null) {
-                        val userId = currentUser.uid
-                        Log.d("Login", "User ID: $userId")
+    private fun login(email: String, password: String) {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var isUserFound = false
 
-                        // جلب بيانات المستخدم من قاعدة البيانات
-                        databaseRef.child(userId).get().addOnSuccessListener { snapshot ->
-                            if (snapshot.exists()) {
-                                val role = snapshot.child("role").getValue(String::class.java)
-                                if (role == "client") {
-                                    val intent = Intent(this, WelcomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                } else if (role == "provider") {
-                                    val intent = Intent(this, WelcomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    Toast.makeText(this, "Unknown role", Toast.LENGTH_SHORT).show()
-                                }
+                for (userSnapshot in snapshot.children) {
+                    val storedEmail = userSnapshot.child("email").getValue(String::class.java)?.trim()
+                    val storedPassword = userSnapshot.child("password").getValue()?.toString()?.trim()
+
+                    Log.d("Login", "Entered Email: $email, Stored Email: $storedEmail")
+                    Log.d("Login", "Entered Password: $password, Stored Password: $storedPassword")
+
+                    if (storedEmail?.equals(email, ignoreCase = true) == true) {
+                        isUserFound = true
+                        if (storedPassword == password) {
+                            val role = userSnapshot.child("role").getValue(String::class.java)?.trim()
+                            Log.d("Login", "User role: $role")
+
+                            if (role == "client") {
+                                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else if (role == "provider") {
+                                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
                             } else {
-                                Toast.makeText(this, "User data not found in database.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MainActivity, "Unknown role", Toast.LENGTH_SHORT).show()
                             }
-                        }.addOnFailureListener { e ->
-                            Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@MainActivity, "Invalid Password", Toast.LENGTH_SHORT).show()
                         }
+                        break
                     }
-                } else {
-                    // حدث خطأ أثناء تسجيل الدخول
-                    Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+
+                if (!isUserFound) {
+                    Toast.makeText(this@MainActivity, "User not found", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MainActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
 }
