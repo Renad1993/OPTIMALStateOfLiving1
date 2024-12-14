@@ -119,19 +119,27 @@ class SelectFeelingsActivity : AppCompatActivity() {
                         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         val currentDateTime = dateFormat.format(calendar.time)
 
-                        val data = mapOf(
-                            "color" to color,
-                            "datetime" to currentDateTime
-                        )
+                        // إنشاء البيانات الجديدة كإدخال ضمن الـ History
+                        val entryKey = databaseRef.child(userId).child("History").push().key // إنشاء مفتاح جديد
+                        if (entryKey != null) {
+                            val historyData = mapOf(
+                                "Time" to currentDateTime,
+                                "status" to color
+                            )
 
-                        databaseRef.child(userId).updateChildren(data)
-                            .addOnSuccessListener {
-                                Log.d("FirebaseDebug", "Data stored successfully.")
-                                Toast.makeText(this, "Data stored successfully.", Toast.LENGTH_SHORT).show()
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("Firebase", "Error storing data: ${e.message}")
-                            }
+                            // إضافة البيانات إلى عقدة History
+                            databaseRef.child(userId).child("History").child(entryKey).setValue(historyData)
+                                .addOnSuccessListener {
+                                    Log.d("FirebaseDebug", "History entry added successfully.")
+                                    Toast.makeText(this, "History entry added successfully.", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("Firebase", "Error adding history entry: ${e.message}")
+                                }
+                        } else {
+                            Log.e("FirebaseDebug", "Failed to generate entry key.")
+                            Toast.makeText(this, "Failed to save history entry.", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         Log.e("FirebaseDebug", "User is not a client")
                         Toast.makeText(this, "Only clients can submit data.", Toast.LENGTH_SHORT).show()
@@ -150,9 +158,11 @@ class SelectFeelingsActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
 }
+
+
+
+
+
+
 
