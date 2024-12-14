@@ -93,7 +93,9 @@ class SelectFeelingsActivity : AppCompatActivity() {
         }
         backButton.setOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent) // move to the next screen
+            finish()
         }
 
         //startActivity(intent) // move to the next screen
