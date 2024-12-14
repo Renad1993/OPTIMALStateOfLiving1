@@ -28,19 +28,23 @@ class WelcomeActivity: AppCompatActivity() {
 
         takeAssesmentButton.setOnClickListener {
             val intent = Intent(this, SelectFeelingsActivity::class.java)
-            startActivity(intent) // move to the next screen
+            startActivity(intent)
+
         }
         viewExercisesButton.setOnClickListener {
             val intent = Intent(this, ExercisesActivity::class.java)
-            startActivity(intent) // move to the next screen
+            startActivity(intent)
+
         }
         viewHistoryButton.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
-            startActivity(intent) // move to the next screen
+            startActivity(intent)
+
         }
         settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent) // move to the next screen
+            startActivity(intent)
+
         }
     }
 }
