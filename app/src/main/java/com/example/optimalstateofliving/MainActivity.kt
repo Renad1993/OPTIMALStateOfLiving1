@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
                             } else if (role == "provider") {
-                                val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                                val intent = Intent(this@MainActivity, ProviderActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
