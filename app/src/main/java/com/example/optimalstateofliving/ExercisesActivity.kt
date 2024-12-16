@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.play.core.integrity.x
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -35,6 +37,8 @@ class ExercisesActivity: AppCompatActivity() {
         otherExercisesButton = findViewById(R.id.otherExercisesButton)
         recommendedFoodsButton = findViewById(R.id.recommendedFoodsButton)
         watchVideoButton = findViewById(R.id.watchVideoButton)
+
+
         var colorName=""
 
         databaseRef = FirebaseDatabase.getInstance().getReference("_user")
@@ -103,7 +107,7 @@ class ExercisesActivity: AppCompatActivity() {
                                 var exerciseKey = "exercise$x" // تحديد المفتاح المطلوب (exercise1, exercise2, ...)
 
                                 // استدعاء الوظيفة لقراءة البيانات
-                                readExercise(exerciseKey)
+                                readExercise(exerciseKey,x)
                                                            }
 
                             otherExercisesButton.setOnClickListener {
@@ -116,7 +120,7 @@ class ExercisesActivity: AppCompatActivity() {
                                 var x = getValueBasedOnColor(colorName)
 
                                 var exerciseKey = "exercise$x"
-                                readExercise(exerciseKey)
+                                readExercise(exerciseKey,x)
 
 
                             }
@@ -130,7 +134,7 @@ class ExercisesActivity: AppCompatActivity() {
                                 var x = getValueBasedOnColor(colorName)
 
                                 var FoodKey = "food$x"
-                                readExercise(FoodKey)
+                                readExercise(FoodKey,x)
 
                             }
                             watchVideoButton.setOnClickListener {
@@ -148,14 +152,32 @@ class ExercisesActivity: AppCompatActivity() {
                         private fun showCustomDialog(
                             titel: String,
                             steps: String,
-                            description: String
+                            description: String,
+                            x: Int
                         ) {
                             // إنشاء Dialog
                             val dialog = Dialog(this)
                             dialog.setContentView(R.layout.dialog_custom)
-                            dialog.setCancelable(true) // يسمح بإغلاق الـ Dialog بالنقر خارج النافذة
 
-                            // ضبط البيانات داخل الـ Dialog
+                            val dialogLayout = dialog.findViewById<LinearLayout>(R.id.dialoglay)
+
+                            if(x==1) {
+                                dialogLayout.background =
+                                    ContextCompat.getDrawable(this, R.drawable.img_1)
+                            }
+                            if(x==2) {
+                                dialogLayout.background =
+                                    ContextCompat.getDrawable(this, R.drawable.img_2)
+                            }
+                            if(x==3) {
+                                dialogLayout.background =
+                                    ContextCompat.getDrawable(this, R.drawable.img_3)
+                            }
+                            if(x==4) {
+                                dialogLayout.background =
+                                    ContextCompat.getDrawable(this, R.drawable.img_4)
+                            }
+                                                          // ضبط البيانات داخل الـ Dialog
                             val tvData1 = dialog.findViewById<TextView>(R.id.tvData1)
                             val tvData2 = dialog.findViewById<TextView>(R.id.tvData2)
                             val tvData3 = dialog.findViewById<TextView>(R.id.tvData3)
@@ -175,8 +197,8 @@ class ExercisesActivity: AppCompatActivity() {
                             dialog.setCancelable(false)
                         }
 
-                        private fun readExercise(exerciseKey: String) {
-                            val exercise1 = "exercise1"
+                        private fun readExercise(exerciseKey: String,x :Int) {
+
                             databaseRef.child(exerciseKey).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -193,7 +215,8 @@ class ExercisesActivity: AppCompatActivity() {
                                                         showCustomDialog(
                                                             name,
                                                             description,
-                                                            duration
+                                                            duration,
+                                                            x
                                                         )
                                                     }
                                                 }
