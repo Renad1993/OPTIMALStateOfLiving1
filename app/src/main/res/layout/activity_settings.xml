@@ -20,7 +20,7 @@
 
     <TextView
         tools:ignore="HardcodedText,MissingConstraints"
-        android:id="@+id/welcomeTextView"
+        android:id="@+id/settingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/logoImageView" />
 
     <Button
-        android:id="@+id/takeAssessmentButton"
+        android:id="@+id/changeSettingsButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -41,10 +41,10 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeTextView" />
+        app:layout_constraintTop_toBottomOf="@id/settingTextView" />
 
     <Button
-        android:id="@+id/viewExercisesButton"
+        android:id="@+id/notificationsButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -53,10 +53,10 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/takeAssessmentButton" />
+        app:layout_constraintTop_toBottomOf="@id/changeSettingsButton" />
 
     <Button
-        android:id="@+id/viewHistoryButton"
+        android:id="@+id/shareButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -65,10 +65,10 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewExercisesButton" />
+        app:layout_constraintTop_toBottomOf="@id/notificationsButton" />
 
     <Button
-        android:id="@+id/settingsButton"
+        android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -77,6 +77,6 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewHistoryButton" />
+        app:layout_constraintTop_toBottomOf="@id/shareButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
