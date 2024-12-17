@@ -1,5 +1,6 @@
 package com.example.optimalstateofliving
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ class ProviderActivity : AppCompatActivity() {
     private lateinit var tvProviderName: TextView
     private lateinit var imgAddIcon: ImageView
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_provider)
@@ -47,8 +49,9 @@ class ProviderActivity : AppCompatActivity() {
             onItemClick = { item ->
                 // الانتقال إلى صفحة التاريخ عند الضغط
                 val intent = Intent(this, HistoryActivity::class.java)
-               // intent.putExtra("itemName", item)
+                //intent.putExtra("itemName", item)
                 startActivity(intent)
+
             }
         )
 
@@ -57,4 +60,5 @@ class ProviderActivity : AppCompatActivity() {
             // يمكنك تنفيذ الإجراء المطلوب هنا (إضافة عنصر جديد مثلاً)
         }
     }
+
 }
