@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBFBFB"
+    android:background="#F5EFE7"
     tools:context=".MainActivity">
 
-    <!-- الدائرة المركزية -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,11 +23,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.247" />
-
+    <!-- الدائرة المركزية -->
     <androidx.cardview.widget.CardView
         android:id="@+id/center_bubble"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_margin="8dp"
         android:backgroundTint="#FCC737"
         app:cardCornerRadius="75dp"
@@ -41,12 +41,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Patient\nConfident"
+            android:text="Patient\nConfident\nKind\tTolerant\nGrounded\nEmpathetic"
             android:lineSpacingExtra="2dp"
             android:singleLine="false"
             android:textColor="#000000"
             android:textSize="16sp"
-            android:textStyle="bold"
             tools:layout_editor_absoluteX="145dp"
             tools:layout_editor_absoluteY="164dp" />
 
@@ -57,8 +56,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/top_bubble"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_margin="8dp"
         android:backgroundTint="#FFFFFF"
         app:cardCornerRadius="50dp"
@@ -71,20 +70,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Lonely\nIsolated\nLack of Support"
+            android:text="Lonely\nIsolated\nLack of Support\nOverwhelmed\nWorried"
             android:lineSpacingExtra="2dp"
             android:singleLine="false"
             android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
 
     </androidx.cardview.widget.CardView>
 
     <!-- الدائرة اليمنى -->
     <androidx.cardview.widget.CardView
         android:id="@+id/right_bubble"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_margin="8dp"
         android:backgroundTint="#22177A"
         app:cardCornerRadius="50dp"
@@ -97,19 +95,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Depressed\nLow Energy"
+            android:text="Depressed\nLow Energy\nStuck\tSloppy\nSelfish"
             android:lineSpacingExtra="2dp"
             android:singleLine="false"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
     </androidx.cardview.widget.CardView>
 
     <!-- الدائرة اليسرى -->
     <androidx.cardview.widget.CardView
         android:id="@+id/left_bubble"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_margin="8dp"
         android:backgroundTint="#C80036"
         app:cardCornerRadius="50dp"
@@ -122,12 +119,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Anger\nJudgement"
+            android:text="Anger\nRighteous\nHot tempered\nJudgement"
             android:lineSpacingExtra="2dp"
             android:singleLine="false"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -136,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="56dp"
-        android:backgroundTint="#FD9B63"
+        android:backgroundTint="#D8C4B6"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -147,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="56dp"
-        android:backgroundTint="#FD9B63"
+        android:backgroundTint="#D8C4B6"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -159,7 +155,7 @@
         android:layout_marginStart="31dp"
         android:layout_marginEnd="31dp"
         android:layout_marginBottom="44dp"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="#D8C4B6"
         android:ems="10"
         android:gravity="start|top"
         android:textColor="#000000"
