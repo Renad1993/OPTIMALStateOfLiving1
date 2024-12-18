@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
 
-        // ربط العناصر مع واجهة المستخدم
+        // Connecting elements with user interface
         emailEditText = findViewById(R.id.usernameEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.btsingin)
@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
         forgetPassword = findViewById(R.id.forgotPasswordTextView)
 
 
-        // مرجع قاعدة البيانات
+        // Database Reference
         databaseRef = FirebaseDatabase.getInstance().getReference("_user")
 
-        // الحدث عند الضغط على زر تسجيل الدخول
+        // Event when you hit the login button
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -53,18 +53,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // الانتقال إلى شاشة تسجيل حساب جديد
+        // Go to a new account registration screen
         signUpUser.setOnClickListener {
             val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
         }
 
-        // زر Forgot Password
+        //  Forgot Password Button
         forgetPassword.setOnClickListener {
             showResetPasswordDialog()
         }
     }
 
+    // check user Authentication
     private fun loginWithFirebaseAuth(email: String, password: String) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                         val userId = currentUser.uid
                         Log.d("Login", "User ID: $userId")
 
-                        // جلب بيانات المستخدم من قاعدة البيانات
+                        // Bringing user data from the database
                         databaseRef.child(userId).get().addOnSuccessListener { snapshot ->
                             if (snapshot.exists()) {
                                 val role = snapshot.child("role").getValue(String::class.java)
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
                                 }
 
-                                // تمرير البيانات إلى النشاط التالي
+                                // Pass User information to the following activity
                                 intent.putExtra("FirstName", firstName)
                                 intent.putExtra("LastName", lastName)
                                 intent.putExtra("Role", role)
@@ -103,14 +104,15 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    // حدث خطأ أثناء تسجيل الدخول
+                    // Error occurred during login
                     Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
+    //Forget password dialog box
     private fun showResetPasswordDialog() {
-        // مربع حوار لإدخال البريد الإلكتروني
+        // Email Entry Dialog Box
         val emailInput = EditText(this)
         emailInput.hint = "Enter your email"
 
@@ -141,23 +143,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun updatePasswordInDatabase(newPassword: String) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            val userRef = FirebaseDatabase.getInstance().getReference("_user").child(userId)
-            val updates = mapOf("password" to newPassword)
 
-            userRef.updateChildren(updates)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Password updated in database!", Toast.LENGTH_LONG).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error updating database: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-        } else {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
 
 

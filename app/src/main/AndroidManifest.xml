@@ -33,16 +33,16 @@
             android:exported="false" />
         <activity
             android:name=".ExercisesActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".CreateAccountActivity"
             android:exported="true" />
         <activity
             android:name=".SelectFeelingsActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".WelcomeActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
