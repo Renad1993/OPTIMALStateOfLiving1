@@ -67,44 +67,44 @@
         app:layout_constraintStart_toEndOf="@+id/firstNameEditText"
         app:layout_constraintTop_toBottomOf="@id/createAccountTextView" />
 
-    <TextView
-        android:id="@+id/dobTextView"
-        android:layout_width="45dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="58dp"
-        android:text="@string/dob"
-        app:layout_constraintRight_toLeftOf="@+id/spinnerDay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
+            <TextView
+                android:id="@+id/dobTextView"
+                android:layout_width="45dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="58dp"
+                android:text="@string/dob"
+                app:layout_constraintRight_toLeftOf="@+id/spinnerDay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
 
-    <Spinner
-        android:id="@+id/spinnerDay"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerMonth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
+            <Spinner
+                android:id="@+id/spinnerDay"
+                android:layout_width="80dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintEnd_toStartOf="@+id/spinnerMonth"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/firstNameEditText" />
 
-    <Spinner
-        android:id="@+id/spinnerMonth"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerYear"
-        app:layout_constraintStart_toEndOf="@+id/spinnerDay"
-        app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
+            <Spinner
+                android:id="@+id/spinnerMonth"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintEnd_toStartOf="@+id/spinnerYear"
+                app:layout_constraintStart_toEndOf="@+id/spinnerDay"
+                app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
 
-    <Spinner
-        android:id="@+id/spinnerYear"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinnerMonth"
-        app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/spinnerMonth"
+                app:layout_constraintTop_toBottomOf="@id/lastNameEditText" />
 
 
     <EditText

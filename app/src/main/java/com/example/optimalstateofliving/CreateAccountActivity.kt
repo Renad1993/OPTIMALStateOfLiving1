@@ -64,6 +64,9 @@ class CreateAccountActivity : AppCompatActivity() {
                                 if (task.isSuccessful) {
                                     Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this, WelcomeActivity::class.java)
+                                    // تمرير البيانات إلى النشاط التالي
+                                    intent.putExtra("FirstName", firstName)
+                                    intent.putExtra("LastName", lastName)
                                     startActivity(intent)
                                     finish()
                                 } else {
