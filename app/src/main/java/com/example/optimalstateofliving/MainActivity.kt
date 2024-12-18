@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -19,17 +20,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var signUpUser: TextView
-
+    private lateinit var forgetPassword : TextView
+    private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
 
         // ربط العناصر مع واجهة المستخدم
         emailEditText = findViewById(R.id.usernameEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.btsingin)
         signUpUser = findViewById(R.id.newUserTextView)
+        forgetPassword = findViewById(R.id.forgotPasswordTextView)
+
 
         // مرجع قاعدة البيانات
         databaseRef = FirebaseDatabase.getInstance().getReference("_user")
@@ -50,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         signUpUser.setOnClickListener {
             val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
+        }
+
+        // زر Forgot Password
+        forgetPassword.setOnClickListener {
+            showResetPasswordDialog()
         }
     }
 
@@ -96,4 +108,56 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+
+    private fun showResetPasswordDialog() {
+        // مربع حوار لإدخال البريد الإلكتروني
+        val emailInput = EditText(this)
+        emailInput.hint = "Enter your email"
+
+        AlertDialog.Builder(this)
+            .setTitle("Reset Password")
+            .setMessage("Enter your email to receive a password reset link.")
+            .setView(emailInput)
+            .setPositiveButton("Send") { _, _ ->
+                val email = emailInput.text.toString()
+                if (email.isNotEmpty()) {
+                    sendPasswordResetEmail(email)
+                } else {
+                    Toast.makeText(this, "Email cannot be empty", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun sendPasswordResetEmail(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Password reset email sent!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
+    private fun updatePasswordInDatabase(newPassword: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            val userRef = FirebaseDatabase.getInstance().getReference("_user").child(userId)
+            val updates = mapOf("password" to newPassword)
+
+            userRef.updateChildren(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Password updated in database!", Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error updating database: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
+
