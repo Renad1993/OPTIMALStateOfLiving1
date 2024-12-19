@@ -1,21 +1,17 @@
 package com.example.optimalstateofliving
 
-import android.annotation.SuppressLint
+
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.webkit.WebView
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.play.core.integrity.x
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,12 +23,11 @@ import com.google.firebase.database.getValue
 class ExercisesActivity: AppCompatActivity() {
 
     private lateinit var databaseRef: DatabaseReference
-
     private lateinit var breathingExerciseButton: Button
     private lateinit var otherExercisesButton: Button
     private lateinit var recommendedFoodsButton: Button
     private lateinit var watchVideoButton: Button
-    private lateinit var webView: WebView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -53,14 +48,15 @@ class ExercisesActivity: AppCompatActivity() {
         {
 
             val userId = currentUser.uid
+            //Bring the final user status in Firebase
             databaseRef.child(userId).child("History").orderByKey().limitToLast(1)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            // استخراج العنصر الأخير
+                            // Extraction of the last element
                             for (entry in snapshot.children) {
-                                // قراءة الحقول من العنصر الأخير
                                 val rawStatus = entry.child("status").getValue(Int::class.java) ?: -1
+                                 //get color that represent the user status
                                  colorName = getColorName(rawStatus)
                                 Toast.makeText(
                                     baseContext,
@@ -85,24 +81,23 @@ class ExercisesActivity: AppCompatActivity() {
 
 
         breathingExerciseButton.setOnClickListener {
-            // جلب بيانات المستخدم من قاعدة البيانات
+
             databaseRef = FirebaseDatabase.getInstance()
                 .getReference("_breathingExercises")
             var x = getValueBasedOnColor(colorName)
 
-            var exerciseKey = "exercise$x" // تحديد المفتاح المطلوب (exercise1, exercise2, ...)
+            var exerciseKey = "exercise$x" //  (exercise1, exercise2, ...)
 
-            // استدعاء الوظيفة لقراءة البيانات
             readExercise(exerciseKey,x)
         }
 
         otherExercisesButton.setOnClickListener {
 
 
-            // جلب بيانات المستخدم من قاعدة البيانات
+            // Bringing user data from the database
             databaseRef =
                 FirebaseDatabase.getInstance().getReference("_OtherExercises")
-            // استدعاء الوظيفة لقراءة البيانات
+            //  Recall function to read data
             var x = getValueBasedOnColor(colorName)
 
             var exerciseKey = "exercise$x"
@@ -113,10 +108,10 @@ class ExercisesActivity: AppCompatActivity() {
         recommendedFoodsButton.setOnClickListener {
 
 
-            // جلب بيانات المستخدم من قاعدة البيانات
+            // Bringing user data from the database
             databaseRef =
                 FirebaseDatabase.getInstance().getReference("_RecommendedFoods")
-            // استدعاء الوظيفة لقراءة البيانات
+            // Recall function to read data
             var x = getValueBasedOnColor(colorName)
 
             var FoodKey = "food$x"
@@ -125,14 +120,13 @@ class ExercisesActivity: AppCompatActivity() {
         }
         watchVideoButton.setOnClickListener {
 
-            // جلب بيانات المستخدم من قاعدة البيانات
             databaseRef = FirebaseDatabase.getInstance()
                 .getReference("_Vedio")
             var x = getValueBasedOnColor(colorName)
 
-            var vedioKey = "vedio$x" // تحديد المفتاح المطلوب (vedio1, vedio2, ...)
+            var vedioKey = "vedio$x" // Select the required key (vedio1, vedio2, ...)
 
-            // استدعاء الوظيفة لقراءة البيانات
+            // Recall function to read data
             readVedio(vedioKey,x)
 
         }
@@ -146,12 +140,12 @@ class ExercisesActivity: AppCompatActivity() {
         description: String,
         x: Int
     ) {
-        // إنشاء Dialog
+        // create dialog
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_custom)
 
         val dialogLayout = dialog.findViewById<LinearLayout>(R.id.dialoglay)
-
+        //background base on color status
         if(x==1) {
             dialogLayout.background =
                 ContextCompat.getDrawable(this, R.drawable.img_1)
@@ -168,7 +162,7 @@ class ExercisesActivity: AppCompatActivity() {
             dialogLayout.background =
                 ContextCompat.getDrawable(this, R.drawable.img_4)
         }
-        // ضبط البيانات داخل الـ Dialog
+        // Adjust data within the Dialog
         val tvData1 = dialog.findViewById<TextView>(R.id.tvData1)
         val tvData2 = dialog.findViewById<TextView>(R.id.tvData2)
         val tvData3 = dialog.findViewById<TextView>(R.id.tvData3)
@@ -176,24 +170,23 @@ class ExercisesActivity: AppCompatActivity() {
         tvData2.text = steps
         tvData3.text = description
 
-        // زر الإغلاق
         val btnClose = dialog.findViewById<TextView>(R.id.btnClose)
         btnClose.setOnClickListener {
-            dialog.dismiss() // يغلق الـ Dialog
+            dialog.dismiss() // Dialog closes
         }
 
-        // عرض الـ Dialog
+
         dialog.show()
         dialog.setCancelable(false)
     }
 
+    //function to read exercise base on user status
     private fun readExercise(exerciseKey: String,x :Int) {
 
         databaseRef.child(exerciseKey).addListenerForSingleValueEvent(object :
             ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        // استرداد البيانات كـ Map أو كائن
                         val exercise = snapshot.getValue<Map<String, String>>()
                         if (exercise != null) {
                             val name = exercise["title"]
@@ -212,8 +205,7 @@ class ExercisesActivity: AppCompatActivity() {
                                 }
                             }
 
-
-                            //عرض البيانات
+                            //display data
                             Toast.makeText(
                                 baseContext,
                                 "Name: $name\nDescription: $description\nDuration: $duration",
@@ -242,7 +234,7 @@ class ExercisesActivity: AppCompatActivity() {
 
 
 
-
+    //function to read vedio base on user status
     private fun readVedio(vedioKey: String, x: Int) {
 
         databaseRef.child(vedioKey).addListenerForSingleValueEvent(object :
@@ -278,16 +270,7 @@ class ExercisesActivity: AppCompatActivity() {
         })
     }
 
-
-    fun getValueBasedOnColor(colorName: String): Int {
-        return when (colorName) {
-            "Red" -> 3
-            "Blue" -> 4
-            "Yellow" -> 1
-            "White" -> 2
-            else -> 1 // القيمة الافتراضية
-        }
-    }
+    //map color status stored in database to the color name
     private fun getColorName(status: Int): String {
         return when (status) {
             Color.RED -> "Red"
@@ -295,14 +278,27 @@ class ExercisesActivity: AppCompatActivity() {
             Color.YELLOW -> "Yellow"
             Color.WHITE -> "White"
             else -> {
-                // إذا كانت الألوان مخصصة
+                // If the colors are customized
                 when (status) {
-                    Color.parseColor("#22177A") -> "Blue" // لون أحمر مخصص
-                    Color.parseColor("#C80036") -> "Red" // لون أزرق مخصص
-                    Color.parseColor("#FCC737") -> "Gold" // لون أصفر مخصص
+                    Color.parseColor("#22177A") -> "Blue"
+                    Color.parseColor("#C80036") -> "Red"
+                    Color.parseColor("#FCC737") -> "Gold"
                     else -> "Unknown"
                 }
             }
         }
     }
+
+    //map each color to specific number
+    fun getValueBasedOnColor(colorName: String): Int {
+        return when (colorName) {
+            "Red" -> 3
+            "Blue" -> 4
+            "Yellow" -> 1
+            "White" -> 2
+            else -> 1
+        }
+    }
+
+
 }
