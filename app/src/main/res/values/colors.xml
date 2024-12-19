@@ -6,5 +6,15 @@
     <color name="blue">#3B9CFB</color>
     <color name="teal_200">#03DAC5</color>
     <color name="red">#EA2C1E</color>
-
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="Black">#000000</color>
+    <color name="Back_ground">#FF9A9A</color>
+    <color name="Back_ground1">#FAD0D0</color>
+    <color name="title">#FCA4D8</color>
+    <color name="button">#FF15D9</color>
+    <color name="center">#DF46C8</color>
+    <color name="titleBackground">#F8AAAA</color>
 </resources>
+

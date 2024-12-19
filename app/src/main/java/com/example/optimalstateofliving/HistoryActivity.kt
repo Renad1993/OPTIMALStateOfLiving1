@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.optimalstateofliving.models.HistoryItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
@@ -204,6 +205,3 @@ class HistoryActivity : AppCompatActivity() {
         }
     }
 }
-
-// data model
-data class HistoryItem(val checkTime: String, val statusName: String, val statusColor: Int)
