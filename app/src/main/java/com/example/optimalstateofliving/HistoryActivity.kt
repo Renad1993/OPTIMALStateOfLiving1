@@ -30,22 +30,21 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
-        // ربط العناصر
         backButton = findViewById(R.id.backButton)
         recyclerView = findViewById(R.id.recyclerView)
         daySpinner = findViewById(R.id.daySpinner)
         monthSpinner = findViewById(R.id.monthSpinner)
         yearSpinner = findViewById(R.id.yearSpinner)
 
-        // إعداد RecyclerView
+        // Set up RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         historyAdapter = HistoryAdapter(historyList)
         recyclerView.adapter = historyAdapter
 
-        // ربط قاعدة البيانات
+        // Linking the database
         database = FirebaseDatabase.getInstance().getReference("_user")
 
-        // جلب UID الخاص بالمستخدم الحالي
+        // Bring your current user's UID
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserUid != null) {
             fetchAvailableDates(currentUserUid)
@@ -53,7 +52,7 @@ class HistoryActivity : AppCompatActivity() {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
 
-        // العودة للشاشة الرئيسية
+
         backButton.setOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -61,7 +60,7 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
 
-        // مراقبة تغييرات Spinners لتحميل البيانات تلقائيًا
+        // Monitor Spinners changes to download data automatically
         val listener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 loadHistoryForSelectedDate(currentUserUid)
@@ -84,7 +83,7 @@ class HistoryActivity : AppCompatActivity() {
                     val yearList = mutableListOf<String>()
 
                     for (entry in snapshot.children) {
-                        val date = entry.key ?: continue // الحصول على التاريخ كعقدة
+                        val date = entry.key ?: continue // Getting history as a node
                         val dateParts = date.split("-")
                         if (dateParts.size == 3) {
                             yearList.add(dateParts[0])
@@ -93,7 +92,7 @@ class HistoryActivity : AppCompatActivity() {
                         }
                     }
 
-                    // إعداد Spinners
+                    // Setting up Spinners
                     setupDateSpinner(daySpinner, dayList.distinct().sorted())
                     setupDateSpinner(monthSpinner, monthList.distinct())
                     setupDateSpinner(yearSpinner, yearList.distinct().sorted())
@@ -124,10 +123,10 @@ class HistoryActivity : AppCompatActivity() {
     private fun fetchHistoryByDate(userId: String, date: String) {
         database.child(userId).child("History").child(date).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                historyList.clear() // مسح القائمة القديمة
+                historyList.clear() // Clear Old List
                 if (snapshot.exists()) {
                     for (timeEntry in snapshot.children) {
-                        val time = timeEntry.key ?: continue // الحصول على الوقت
+                        val time = timeEntry.key ?: continue // get the time
                         val status = timeEntry.child("status").getValue(Int::class.java) ?: -1
                         val colorName = getColorName(status)
                         historyList.add(HistoryItem(time, colorName, status))
@@ -206,5 +205,5 @@ class HistoryActivity : AppCompatActivity() {
     }
 }
 
-// نموذج البيانات
+// data model
 data class HistoryItem(val checkTime: String, val statusName: String, val statusColor: Int)

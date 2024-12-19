@@ -53,24 +53,46 @@ class ExercisesActivity: AppCompatActivity() {
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            // Extraction of the last element
-                            for (entry in snapshot.children) {
-                                val rawStatus = entry.child("status").getValue(Int::class.java) ?: -1
-                                 //get color that represent the user status
-                                 colorName = getColorName(rawStatus)
+                            // الخطوة 1: استخراج آخر تاريخ (العقدة الأخيرة)
+                            val lastDateSnapshot = snapshot.children.lastOrNull()
+                            if (lastDateSnapshot != null) {
+                                val lastDate = lastDateSnapshot.key // اسم العقدة (مثلاً 2024-12-19)
+
+                                // الخطوة 2: استخراج آخر وقت ضمن هذا التاريخ
+                                val lastTimeSnapshot = lastDateSnapshot.children.lastOrNull()
+                                if (lastTimeSnapshot != null) {
+                                    val lastTime = lastTimeSnapshot.key // اسم العقدة (مثلاً 11:30 PM)
+
+                                    // الخطوة 3: استخراج الحالة المرتبطة بهذا الوقت
+                                    val rawStatus = lastTimeSnapshot.child("status").getValue(Int::class.java) ?: -1
+                                    colorName = getColorName(rawStatus)
+
+                                    // طباعة النتيجة (للتجربة)
+                                    Toast.makeText(
+                                        baseContext,
+                                        "Last Status on $lastDate at $lastTime: $colorName",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+
+                                    // يمكنك الآن استخدام `colorName` في باقي منطق الكود
+                                } else {
+                                    Toast.makeText(
+                                        baseContext,
+                                        "No times found for the latest date.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
                                 Toast.makeText(
                                     baseContext,
-                                    colorName,
+                                    "No dates found in History.",
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                             }
                         } else {
-                            println("No data found in History.")
+                            Toast.makeText(baseContext, "History is empty.", Toast.LENGTH_SHORT).show()
                         }
-
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         println("Error: ${error.message}")
                     }
@@ -270,6 +292,19 @@ class ExercisesActivity: AppCompatActivity() {
         })
     }
 
+
+
+    //map each color to specific number
+    fun getValueBasedOnColor(colorName: String): Int {
+        return when (colorName) {
+            "Red" -> 3
+            "Blue" -> 4
+            "Yellow" -> 1
+            "White" -> 2
+            else -> 1
+        }
+    }
+
     //map color status stored in database to the color name
     private fun getColorName(status: Int): String {
         return when (status) {
@@ -286,17 +321,6 @@ class ExercisesActivity: AppCompatActivity() {
                     else -> "Unknown"
                 }
             }
-        }
-    }
-
-    //map each color to specific number
-    fun getValueBasedOnColor(colorName: String): Int {
-        return when (colorName) {
-            "Red" -> 3
-            "Blue" -> 4
-            "Yellow" -> 1
-            "White" -> 2
-            else -> 1
         }
     }
 
