@@ -28,13 +28,13 @@ class CreateAccountActivity : AppCompatActivity() {
             val firstName = binding.firstNameEditText.text.toString().trim()
             val lastName = binding.lastNameEditText.text.toString().trim()
 
-            // الحصول على التاريخ
+
             val selectedDay = binding.spinnerDay.selectedItem.toString()
             val selectedMonth = binding.spinnerMonth.selectedItem.toString()
             val selectedYear = binding.spinnerYear.selectedItem.toString()
             val dob = "$selectedDay/$selectedMonth/$selectedYear"
 
-            // التحقق من الخيار المحدد
+            // Check the selected option
             val selectedOptionId = binding.rgOptions.checkedRadioButtonId
             val provider = when (selectedOptionId) {
                 binding.rbYes.id -> "Yes"
@@ -43,13 +43,13 @@ class CreateAccountActivity : AppCompatActivity() {
             }
 
             if (email.isNotEmpty() && pass.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()) {
-
+                //create new user
                 firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        // إضافة البيانات إلى قاعدة بيانات Firebase
+                        // Check current user ID
                         val userId = firebaseAuth.currentUser?.uid
                         val databaseRef = FirebaseDatabase.getInstance().getReference("_user")
-
+                        //store in firebase database
                         val user = mapOf(
                             "DOB" to dob,
                             "FirstName" to firstName,
@@ -64,7 +64,7 @@ class CreateAccountActivity : AppCompatActivity() {
                                 if (task.isSuccessful) {
                                     Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this, WelcomeActivity::class.java)
-                                    // تمرير البيانات إلى النشاط التالي
+                                    // Pass data to the following activity
                                     intent.putExtra("FirstName", firstName)
                                     intent.putExtra("LastName", lastName)
                                     startActivity(intent)
@@ -89,13 +89,13 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        // إعداد الأيام (1-31)
+        // Preparation Days (1-31)
         val days = (1..31).map { it.toString() }
         val dayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, days)
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDay.adapter = dayAdapter
 
-        // إعداد الأشهر
+        // Months Preparation
         val months = listOf(
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -104,7 +104,7 @@ class CreateAccountActivity : AppCompatActivity() {
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerMonth.adapter = monthAdapter
 
-        // إعداد السنوات (1900 - السنة الحالية)
+        // Preparation of years (1900 - current year)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         val years = (1900..currentYear).map { it.toString() }
         val yearAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, years)
