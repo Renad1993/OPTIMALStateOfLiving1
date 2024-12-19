@@ -1,5 +1,6 @@
 package com.example.optimalstateofliving
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -9,6 +10,7 @@ import com.example.optimalstateofliving.databinding.ActivityCreateAccountBinding
 
 class WelcomeActivity: AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.welcome_screen)
@@ -18,6 +20,7 @@ class WelcomeActivity: AppCompatActivity() {
         val viewHistoryButton = findViewById<Button>(R.id.viewHistoryButton)
         val settingsButton = findViewById<Button>(R.id.settingsButton)
 
+        //get current user information
         val firstName = intent.getStringExtra("FirstName")
         val lastName = intent.getStringExtra("LastName")
         val role = intent.getStringExtra("Role")
