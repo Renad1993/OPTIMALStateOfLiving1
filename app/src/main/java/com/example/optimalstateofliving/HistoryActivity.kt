@@ -3,6 +3,8 @@ package com.example.optimalstateofliving
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -12,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class HistoryActivity : AppCompatActivity() {
@@ -28,30 +29,31 @@ class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
-        backButton = findViewById(R.id.backButton)
-        // ربط RecyclerView
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        historyAdapter = HistoryAdapter(historyList)
-        recyclerView.adapter = historyAdapter
 
-        // ربط Spinners
+        // ربط العناصر
+        backButton = findViewById(R.id.backButton)
+        recyclerView = findViewById(R.id.recyclerView)
         daySpinner = findViewById(R.id.daySpinner)
         monthSpinner = findViewById(R.id.monthSpinner)
         yearSpinner = findViewById(R.id.yearSpinner)
+
+        // إعداد RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        historyAdapter = HistoryAdapter(historyList)
+        recyclerView.adapter = historyAdapter
 
         // ربط قاعدة البيانات
         database = FirebaseDatabase.getInstance().getReference("_user")
 
         // جلب UID الخاص بالمستخدم الحالي
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
-
         if (currentUserUid != null) {
-            fetchHistoryData(currentUserUid)
+            fetchAvailableDates(currentUserUid)
         } else {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
 
+        // العودة للشاشة الرئيسية
         backButton.setOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -59,9 +61,21 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
 
+        // مراقبة تغييرات Spinners لتحميل البيانات تلقائيًا
+        val listener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                loadHistoryForSelectedDate(currentUserUid)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        daySpinner.onItemSelectedListener = listener
+        monthSpinner.onItemSelectedListener = listener
+        yearSpinner.onItemSelectedListener = listener
     }
 
-    private fun fetchHistoryData(userId: String) {
+    private fun fetchAvailableDates(userId: String) {
         database.child(userId).child("History").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -70,30 +84,57 @@ class HistoryActivity : AppCompatActivity() {
                     val yearList = mutableListOf<String>()
 
                     for (entry in snapshot.children) {
-                        val rawTime = entry.child("Time").getValue(String::class.java) ?: ""
-                        val dateParts = extractDateParts(rawTime)
-                        if (dateParts != null) {
-                            dayList.add(dateParts.first)
-                            monthList.add(dateParts.second)
-                            yearList.add(dateParts.third)
+                        val date = entry.key ?: continue // الحصول على التاريخ كعقدة
+                        val dateParts = date.split("-")
+                        if (dateParts.size == 3) {
+                            yearList.add(dateParts[0])
+                            monthList.add(getMonthName(dateParts[1]))
+                            dayList.add(dateParts[2])
                         }
-
-                        // تنسيق الوقت وعرضه في RecyclerView
-                        val formattedTime = formatTime(rawTime)
-                        val rawStatus = entry.child("status").getValue(Int::class.java) ?: -1
-                        val colorName = getColorName(rawStatus)
-                        historyList.add(HistoryItem(formattedTime, colorName, rawStatus))
                     }
 
-                    // تحديث RecyclerView
-                    historyAdapter.notifyDataSetChanged()
-
-                    // إعداد Spinners لليوم، الشهر، السنة
-                    setupDateSpinner(daySpinner, dayList.distinct())
+                    // إعداد Spinners
+                    setupDateSpinner(daySpinner, dayList.distinct().sorted())
                     setupDateSpinner(monthSpinner, monthList.distinct())
-                    setupDateSpinner(yearSpinner, yearList.distinct())
+                    setupDateSpinner(yearSpinner, yearList.distinct().sorted())
                 } else {
                     Toast.makeText(this@HistoryActivity, "No history found", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HistoryActivity, "Failed to load dates: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun loadHistoryForSelectedDate(userId: String?) {
+        if (userId == null) return
+
+        val selectedDay = daySpinner.selectedItem?.toString()
+        val selectedMonth = monthSpinner.selectedItem?.toString()
+        val selectedYear = yearSpinner.selectedItem?.toString()
+
+        if (!selectedDay.isNullOrEmpty() && !selectedMonth.isNullOrEmpty() && !selectedYear.isNullOrEmpty()) {
+            val selectedDate = "$selectedYear-${getMonthNumber(selectedMonth)}-$selectedDay"
+            fetchHistoryByDate(userId, selectedDate)
+        }
+    }
+
+    private fun fetchHistoryByDate(userId: String, date: String) {
+        database.child(userId).child("History").child(date).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                historyList.clear() // مسح القائمة القديمة
+                if (snapshot.exists()) {
+                    for (timeEntry in snapshot.children) {
+                        val time = timeEntry.key ?: continue // الحصول على الوقت
+                        val status = timeEntry.child("status").getValue(Int::class.java) ?: -1
+                        val colorName = getColorName(status)
+                        historyList.add(HistoryItem(time, colorName, status))
+                    }
+                    historyAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(this@HistoryActivity, "No data found for selected date", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -103,40 +144,49 @@ class HistoryActivity : AppCompatActivity() {
         })
     }
 
-    private fun extractDateParts(rawTime: String): Triple<String, String, String>? {
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val date = inputFormat.parse(rawTime)
-            val calendar = Calendar.getInstance()
-            calendar.time = date ?: return null
-
-            val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
-            val month = SimpleDateFormat("MMM", Locale.getDefault()).format(date) // استخراج الشهر كـ Jan, Feb
-            val year = calendar.get(Calendar.YEAR).toString()
-
-            Triple(day, month, year)
-        } catch (e: Exception) {
-            null // في حال حدوث خطأ، لا يتم إرجاع قيمة
-        }
-    }
-
     private fun setupDateSpinner(spinner: Spinner, dataList: List<String>) {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, dataList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
     }
 
-    private fun formatTime(rawTime: String): String {
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
-            val date = inputFormat.parse(rawTime)
-            outputFormat.format(date ?: rawTime)
-        } catch (e: Exception) {
-            rawTime // إذا كان هناك خطأ، ارجع للقيمة الأصلية
+    private fun getMonthNumber(month: String): String {
+        return when (month) {
+            "Jan" -> "01"
+            "Feb" -> "02"
+            "Mar" -> "03"
+            "Apr" -> "04"
+            "May" -> "05"
+            "Jun" -> "06"
+            "Jul" -> "07"
+            "Aug" -> "08"
+            "Sep" -> "09"
+            "Oct" -> "10"
+            "Nov" -> "11"
+            "Dec" -> "12"
+            else -> "01"
         }
     }
 
+    private fun getMonthName(monthNumber: String): String {
+        return when (monthNumber) {
+            "01" -> "Jan"
+            "02" -> "Feb"
+            "03" -> "Mar"
+            "04" -> "Apr"
+            "05" -> "May"
+            "06" -> "Jun"
+            "07" -> "Jul"
+            "08" -> "Aug"
+            "09" -> "Sep"
+            "10" -> "Oct"
+            "11" -> "Nov"
+            "12" -> "Dec"
+            else -> "Jan"
+        }
+    }
+
+    //map color status stored in database to the color name
     private fun getColorName(status: Int): String {
         return when (status) {
             Color.RED -> "Red"
@@ -144,19 +194,16 @@ class HistoryActivity : AppCompatActivity() {
             Color.YELLOW -> "Yellow"
             Color.WHITE -> "White"
             else -> {
-                // إذا كانت الألوان مخصصة
+                // If the colors are customized
                 when (status) {
-                    Color.parseColor("#22177A") -> "Blue" // لون أحمر مخصص
-                    Color.parseColor("#C80036") -> "Red" // لون أزرق مخصص
-                    Color.parseColor("#FCC737") -> "Gold" // لون أصفر مخصص
+                    Color.parseColor("#22177A") -> "Blue"
+                    Color.parseColor("#C80036") -> "Red"
+                    Color.parseColor("#FCC737") -> "Gold"
                     else -> "Unknown"
                 }
             }
         }
     }
-
-
-
 }
 
 // نموذج البيانات

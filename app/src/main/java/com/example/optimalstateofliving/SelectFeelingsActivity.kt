@@ -121,50 +121,43 @@ class SelectFeelingsActivity : AppCompatActivity() {
                     val role = snapshot.child("role").value.toString().lowercase()
                     Log.d("FirebaseDebug", "Role found: $role")
                     if (role == "client") {
-                        // Get the current time
+                        // Get the current date and time
                         val calendar = Calendar.getInstance()
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                        val currentDateTime = dateFormat.format(calendar.time)
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        val currentDate = dateFormat.format(calendar.time) // Get the current date
+                        val currentTime = timeFormat.format(calendar.time) // Get the current time
 
-                        // Create new data as an entry in History
-                        val entryKey = databaseRef.child(userId).child("History").push().key // إنشاء مفتاح جديد
-                        if (entryKey != null) {
-                            val historyData = mapOf(
-                                "Time" to currentDateTime,
-                                "status" to color
-                            )
+                        // Define the path for storing the data
+                        val dateNode = databaseRef.child(userId).child("History").child(currentDate)
+                        val timeNode = dateNode.child(currentTime)
+                        // Create data map
+                        val historyData = mapOf(
+                            "status" to color
+                        )
 
-                            // Add data to History node
-                            databaseRef.child(userId).child("History").child(entryKey).setValue(historyData)
-                                .addOnSuccessListener {
-                                    Log.d("FirebaseDebug", "History entry added successfully.")
-                                    Toast.makeText(this, "History entry added successfully.", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.e("Firebase", "Error adding history entry: ${e.message}")
-                                }
-                        } else {
-                            Log.e("FirebaseDebug", "Failed to generate entry key.")
-                            Toast.makeText(this, "Failed to save history entry.", Toast.LENGTH_SHORT).show()
-                        }
+                        // Add data under the time node
+                        timeNode.setValue(historyData)
+                            .addOnSuccessListener {
+                                Log.d("FirebaseDebug", "History entry added successfully under $currentDate/$currentTime.")
+                                Toast.makeText(this, "History entry added successfully.", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("Firebase", "Error adding history entry: ${e.message}")
+                            }
                     } else {
-                        Log.e("FirebaseDebug", "User is not a client")
                         Toast.makeText(this, "Only clients can submit data.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("FirebaseDebug", "Role field is missing.")
                     Toast.makeText(this, "Role field is missing in the database.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Log.e("FirebaseDebug", "User data not found.")
                 Toast.makeText(this, "User data not found in the database.", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { e ->
-            Log.e("FirebaseDebug", "Error fetching user data: ${e.message}")
             Toast.makeText(this, "Error connecting to the database. Try again.", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
 
 
