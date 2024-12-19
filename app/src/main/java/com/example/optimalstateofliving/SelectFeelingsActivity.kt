@@ -44,6 +44,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
             val rotation = ObjectAnimator.ofFloat(bubble, "rotation", 0f, 360f)
 
             val animatorSet = AnimatorSet()
+            // Play animations simultaneously
             animatorSet.playTogether(scaleUpX, scaleUpY, rotation)
             animatorSet.duration = 600
             animatorSet.start()
@@ -52,15 +53,18 @@ class SelectFeelingsActivity : AppCompatActivity() {
         // Setting events when you click on Circles
         centerBubble.setOnClickListener {
             animateBubble(centerBubble)
-            Toast.makeText(this, "You clicked the Center Bubble!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "You clicked the Gold Bubble!", Toast.LENGTH_SHORT).show()
+            // Get the text inside the bubble
             val centerText = (centerBubble.getChildAt(0) as TextView).text.toString()
+            // Set the text in the EditText
             editText.setText(centerText)
+            // Save the selected color
             selectedColor = centerBubble.backgroundTintList?.defaultColor
         }
 
         topBubble.setOnClickListener {
             animateBubble(topBubble)
-            Toast.makeText(this, "You clicked the Top Bubble!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "You clicked the White Bubble!", Toast.LENGTH_SHORT).show()
             val topText = (topBubble.getChildAt(0) as TextView).text.toString()
             editText.setText(topText)
             selectedColor = topBubble.backgroundTintList?.defaultColor
@@ -68,7 +72,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
 
         rightBubble.setOnClickListener {
             animateBubble(rightBubble)
-            Toast.makeText(this, "You clicked the Right Bubble!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "You clicked the Blue Bubble!", Toast.LENGTH_SHORT).show()
             val rightText = (rightBubble.getChildAt(0) as TextView).text.toString()
             editText.setText(rightText)
             selectedColor = rightBubble.backgroundTintList?.defaultColor
@@ -76,7 +80,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
 
         leftBubble.setOnClickListener {
             animateBubble(leftBubble)
-            Toast.makeText(this, "You clicked the Left Bubble!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "You clicked the Red Bubble!", Toast.LENGTH_SHORT).show()
             val leftText = (leftBubble.getChildAt(0) as TextView).text.toString()
             editText.setText(leftText)
             selectedColor = leftBubble.backgroundTintList?.defaultColor
@@ -84,7 +88,6 @@ class SelectFeelingsActivity : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
-            val intent = Intent(this, ExercisesActivity::class.java)
             if (selectedColor != null) {
                 saveDataToFirebase(selectedColor!!)
             } else {
@@ -94,21 +97,22 @@ class SelectFeelingsActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            startActivity(intent) // move to the next screen
+            startActivity(intent) // move to the previous screen
             finish()
         }
 
-        //startActivity(intent) // move to the next screen
-        }
+
+    }
 
     private fun saveDataToFirebase(color: Int) {
+        // Get the current user's UID
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         Log.d("FirebaseDebug", "Current User ID: $userId")
         if (userId == null) {
             Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
             return
         }
-
+        // Retrieve user data from Firebase
         databaseRef.child(userId).get().addOnSuccessListener { snapshot ->
             Log.d("FirebaseDebug", "Snapshot exists: ${snapshot.exists()}")
             if (snapshot.exists()) {
@@ -117,11 +121,12 @@ class SelectFeelingsActivity : AppCompatActivity() {
                     val role = snapshot.child("role").value.toString().lowercase()
                     Log.d("FirebaseDebug", "Role found: $role")
                     if (role == "client") {
+                        // Get the current time
                         val calendar = Calendar.getInstance()
                         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         val currentDateTime = dateFormat.format(calendar.time)
 
-                        // إنشاء البيانات الجديدة كإدخال ضمن الـ History
+                        // Create new data as an entry in History
                         val entryKey = databaseRef.child(userId).child("History").push().key // إنشاء مفتاح جديد
                         if (entryKey != null) {
                             val historyData = mapOf(
@@ -129,7 +134,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
                                 "status" to color
                             )
 
-                            // إضافة البيانات إلى عقدة History
+                            // Add data to History node
                             databaseRef.child(userId).child("History").child(entryKey).setValue(historyData)
                                 .addOnSuccessListener {
                                     Log.d("FirebaseDebug", "History entry added successfully.")
