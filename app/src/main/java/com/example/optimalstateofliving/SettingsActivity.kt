@@ -58,8 +58,8 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(16, 16, 16, 16)
             }
 
-            val nameInput = EditText(this).apply { hint = "Enter new name (optional)" }
-            val emailInput = EditText(this).apply { hint = "Enter new email (optional)" }
+            val nameInput = EditText(this).apply { hint = "Enter new First name (optional)" }
+            val LastName = EditText(this).apply { hint = "Enter new Last name (optional)" }
             val passwordInput = EditText(this).apply {
                 hint = "Enter new password (optional)"
                 inputType = android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -71,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
             layout.apply {
                 addView(nameInput)
-                addView(emailInput)
+                addView(LastName)
                 addView(passwordInput)
                 addView(currentPasswordInput)
             }
@@ -81,10 +81,9 @@ class SettingsActivity : AppCompatActivity() {
             // زر الحفظ
             dialog.setPositiveButton("Save") { _, _ ->
                 val newName = nameInput.text.toString().trim()
-                val newEmail = emailInput.text.toString().trim()
+                val newLastName = LastName.text.toString().trim()
                 val newPassword = passwordInput.text.toString().trim()
                 val currentPassword = currentPasswordInput.text.toString().trim()
-
                 currentUser?.let { user ->
                     val userId = user.uid
 
@@ -108,18 +107,19 @@ class SettingsActivity : AppCompatActivity() {
                                             Toast.makeText(this, "Failed to update name: ${e.message}", Toast.LENGTH_SHORT).show()
                                         }
                                 }
-
-                                // تحديث البريد الإلكتروني
-                                if (newEmail.isNotEmpty()) {
-                                    user.updateEmail(newEmail).addOnSuccessListener {
-                                        database.child(userId).child("email").setValue(newEmail)
-                                        Log.e("UpdateSuccess", "Email updated successfully")
-                                        Toast.makeText(this, "Email updated successfully", Toast.LENGTH_SHORT).show()
-                                    }.addOnFailureListener { e ->
-                                        Log.e("UpdateFailure", "Failed to update email: ${e.message}")
-                                        Toast.makeText(this, "Failed to update email: ${e.message}", Toast.LENGTH_SHORT).show()
-                                    }
+                                // تحديث الاسم
+                                if (newLastName.isNotEmpty()) {
+                                    database.child(userId).child("LastName").setValue(newLastName)
+                                        .addOnSuccessListener {
+                                            Log.e("UpdateSuccess", "Name updated successfully")
+                                            Toast.makeText(this, "Name updated successfully", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e("UpdateFailure", "Failed to update name: ${e.message}")
+                                            Toast.makeText(this, "Failed to update name: ${e.message}", Toast.LENGTH_SHORT).show()
+                                        }
                                 }
+
 
                                 // تحديث كلمة المرور
                                 if (newPassword.isNotEmpty()) {
@@ -237,4 +237,6 @@ class SettingsActivity : AppCompatActivity() {
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
+
+
 }
