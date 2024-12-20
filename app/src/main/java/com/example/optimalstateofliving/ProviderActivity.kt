@@ -37,7 +37,7 @@ class ProviderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_provider)
 
-        // ربط العناصر من الواجهة
+
         tvProviderName = findViewById(R.id.tvProviderName)
         recyclerView = findViewById(R.id.recyclerView)
         imgAddIcon = findViewById(R.id.imgAddIcon)
@@ -47,13 +47,13 @@ class ProviderActivity : AppCompatActivity() {
         val lastName = intent.getStringExtra("LastName")
         tvProviderName.text = "Welcome $firstName $lastName"
 
-        // إعداد RecyclerView
+        // Set up RecyclerView
         setupRecyclerView()
 
-        // جلب العملاء المرتبطين بالمزود الحالي
+        // Bring customers associated with the current provider
         fetchClientsFromFirebase()
 
-        // التعامل مع الضغط على أيقونة الإضافة
+        // Dealing with pressing the add icon
         imgAddIcon.setOnClickListener {
             showAddUserDialog()
         }
@@ -64,7 +64,7 @@ class ProviderActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        // إعداد RecyclerView
+        // Set up RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         providerAdapter = ProviderItemAdapter(
             clientList,
@@ -72,7 +72,7 @@ class ProviderActivity : AppCompatActivity() {
                 removeClientFromFirebase(clientName)
             },
             onItemClick = { clientName ->
-                // عرض تاريخ العميل عند الضغط عليه
+                // View customer's history when pressed
                 val email = clientName.substringAfterLast("(", "").substringBefore(")")
                 if (email.isNotEmpty()) {
                     val intent = Intent(this, ClientDetailActivity::class.java)
@@ -98,7 +98,7 @@ class ProviderActivity : AppCompatActivity() {
             return
         }
 
-        // جلب العملاء من Firebase
+        // Bring customers from Firebase
         databaseRef.child(currentUserId).child("MyClient")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -130,7 +130,7 @@ class ProviderActivity : AppCompatActivity() {
             return
         }
 
-        // استخراج البريد الإلكتروني من اسم العميل
+        // Extract email from customer's name
         val email = clientName.substringAfterLast("(", "").substringBefore(")")
 
         if (email.isEmpty()) {

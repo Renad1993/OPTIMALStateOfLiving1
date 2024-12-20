@@ -53,28 +53,27 @@ class ExercisesActivity: AppCompatActivity() {
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            // الخطوة 1: استخراج آخر تاريخ (العقدة الأخيرة)
+                            //  Extract last date (last node)
                             val lastDateSnapshot = snapshot.children.lastOrNull()
                             if (lastDateSnapshot != null) {
-                                val lastDate = lastDateSnapshot.key // اسم العقدة (مثلاً 2024-12-19)
+                                val lastDate = lastDateSnapshot.key // Node name (e.g. 2024-12-19)
 
-                                // الخطوة 2: استخراج آخر وقت ضمن هذا التاريخ
+                                // Extract the last time within this date
                                 val lastTimeSnapshot = lastDateSnapshot.children.lastOrNull()
                                 if (lastTimeSnapshot != null) {
-                                    val lastTime = lastTimeSnapshot.key // اسم العقدة (مثلاً 11:30 PM)
+                                    val lastTime = lastTimeSnapshot.key // Node Name (e.g. 11:30 PM)
 
-                                    // الخطوة 3: استخراج الحالة المرتبطة بهذا الوقت
+                                    // Extract the status associated with this time
                                     val rawStatus = lastTimeSnapshot.child("status").getValue(Int::class.java) ?: -1
                                     colorName = getColorName(rawStatus)
 
-                                    // طباعة النتيجة (للتجربة)
+                                    // Print result
                                     Toast.makeText(
                                         baseContext,
                                         "Last Status on $lastDate at $lastTime: $colorName",
                                         Toast.LENGTH_LONG
                                     ).show()
 
-                                    // يمكنك الآن استخدام `colorName` في باقي منطق الكود
                                 } else {
                                     Toast.makeText(
                                         baseContext,

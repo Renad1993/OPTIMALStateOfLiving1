@@ -14,20 +14,20 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         val channelId = "notification_channel"
 
-        // إعداد الصوت
+        // sound setup
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
-        // إنشاء مدير الإشعارات
+        // notification manager
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // إنشاء قناة إشعارات (لإصدارات أندرويد 8 وما فوق)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId, "Notification Channel", NotificationManager.IMPORTANCE_HIGH)
             channel.setSound(soundUri, null)
             notificationManager.createNotificationChannel(channel)
         }
 
-        // بناء الإشعار
+        // construct notification
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.icon_notification) // تأكد من وجود أيقونة
             .setContentTitle("Reminder")
@@ -36,7 +36,7 @@ class NotificationReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        // عرض الإشعار
+        // display notification
         notificationManager.notify(1, builder.build())
     }
 }

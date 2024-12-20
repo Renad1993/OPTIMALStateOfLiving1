@@ -25,7 +25,6 @@ import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
 
-    // متغير لتحديد نتيجة طلب الإذن
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
@@ -48,12 +47,12 @@ class SettingsActivity : AppCompatActivity() {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val database = FirebaseDatabase.getInstance().getReference("_user")
 
-            // إنشاء Dialog
+            // construct dialog
             val dialog = android.app.AlertDialog.Builder(this)
             dialog.setTitle("Update User Settings")
                 .setCancelable(false)
 
-            // إنشاء حقول الإدخال
+
             val layout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(16, 16, 16, 16)
@@ -79,7 +78,7 @@ class SettingsActivity : AppCompatActivity() {
 
             dialog.setView(layout)
 
-            // زر الحفظ
+
             dialog.setPositiveButton("Save") { _, _ ->
                 val newName = nameInput.text.toString().trim()
                 val newLastName = LastName.text.toString().trim()
@@ -88,7 +87,7 @@ class SettingsActivity : AppCompatActivity() {
                 currentUser?.let { user ->
                     val userId = user.uid
 
-                    // التحقق من إدخال كلمة المرور الحالية
+                    // Check your current password entry
                     if (currentPassword.isNotEmpty()) {
                         val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
                         user.reauthenticate(credential).addOnCompleteListener { reAuthTask ->
@@ -96,7 +95,7 @@ class SettingsActivity : AppCompatActivity() {
                                 Log.e("ReAuth", "Re-authentication successful")
                                 Toast.makeText(this, "Re-authentication successful", Toast.LENGTH_SHORT).show()
 
-                                // تحديث الاسم
+                                // First Name Update
                                 if (newName.isNotEmpty()) {
                                     database.child(userId).child("FirstName").setValue(newName)
                                         .addOnSuccessListener {
@@ -108,7 +107,7 @@ class SettingsActivity : AppCompatActivity() {
                                             Toast.makeText(this, "Failed to update name: ${e.message}", Toast.LENGTH_SHORT).show()
                                         }
                                 }
-                                // تحديث الاسم
+                                // Last Name Update
                                 if (newLastName.isNotEmpty()) {
                                     database.child(userId).child("LastName").setValue(newLastName)
                                         .addOnSuccessListener {
@@ -122,7 +121,7 @@ class SettingsActivity : AppCompatActivity() {
                                 }
 
 
-                                // تحديث كلمة المرور
+                                // password update
                                 if (newPassword.isNotEmpty()) {
                                     user.updatePassword(newPassword).addOnSuccessListener {
                                         database.child(userId).child("password").setValue(newPassword)
@@ -144,11 +143,7 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 }
             }
-
-            // زر الإلغاء
             dialog.setNegativeButton("Cancel", null)
-
-            // عرض Dialog
             dialog.show()
         }
 
@@ -156,20 +151,20 @@ class SettingsActivity : AppCompatActivity() {
 
 
 
-        // تحديد أوقات الإشعارات
+        // notification times
         notificationsButton.setOnClickListener {
             val calendar = Calendar.getInstance()
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
 
-            // عرض TimePickerDialog للمستخدم
+            // View TimePickerDialog for user
             val timePicker = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
-                // ضبط الوقت الذي اختاره المستخدم
+                // Set the time chosen by the user
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
                 calendar.set(Calendar.MINUTE, selectedMinute)
                 calendar.set(Calendar.SECOND, 0)
 
-                // التحقق من إذن POST_NOTIFICATIONS
+                // Verification of the POST_NOTIFICATIONS 's authorization
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(
                             this,
@@ -178,11 +173,11 @@ class SettingsActivity : AppCompatActivity() {
                     ) {
                         scheduleNotification(calendar)
                     } else {
-                        // طلب إذن POST_NOTIFICATIONS من المستخدم
+                        // Request POST_NOTIFICATIONS permission from the user
                         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
                 } else {
-                    // للأجهزة التي تعمل على Android أقل من 13
+
                     scheduleNotification(calendar)
                 }
 
@@ -193,22 +188,18 @@ class SettingsActivity : AppCompatActivity() {
         }
 
 
-
-        // اختيار الأشخاص للمشاركة معهم
         shareButton.setOnClickListener {
             val shareText = "Check out Optimal State of Living App! Download it now."
-
-            // إنشاء Intent للمشاركة
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, shareText)
                 type = "text/plain"
             }
 
-            // عرض التطبيقات التي تدعم المشاركة
+            // View applications that support sharing
             val chooser = Intent.createChooser(shareIntent, "Share via")
 
-            // التحقق إذا كان WhatsApp أو Messenger مثبتين على الجهاز
+            // Check if WhatsApp or Messenger are installed on the device
             val packageManager = packageManager
             if (packageManager.resolveActivity(shareIntent, 0) != null) {
                 startActivity(chooser)
@@ -217,9 +208,8 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // تسجيل الخروج
+        // log out
         backButton.setOnClickListener {
-            // تنفيذ عملية تسجيل الخروج
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
