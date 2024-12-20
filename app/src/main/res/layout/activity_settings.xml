@@ -37,7 +37,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/blue"
-        android:text="@string/changeusersittings"
+        android:text="@string/changesittings"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

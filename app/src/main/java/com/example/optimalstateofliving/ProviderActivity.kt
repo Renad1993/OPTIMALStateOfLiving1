@@ -27,6 +27,8 @@ class ProviderActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvProviderName: TextView
     private lateinit var imgAddIcon: ImageView
+    private lateinit var settengIcon: ImageView
+
     private lateinit var providerAdapter: ProviderItemAdapter
     private val clientList = mutableListOf<String>()
 
@@ -39,6 +41,7 @@ class ProviderActivity : AppCompatActivity() {
         tvProviderName = findViewById(R.id.tvProviderName)
         recyclerView = findViewById(R.id.recyclerView)
         imgAddIcon = findViewById(R.id.imgAddIcon)
+        settengIcon = findViewById(R.id.settengIcon)
 
         val firstName = intent.getStringExtra("FirstName")
         val lastName = intent.getStringExtra("LastName")
@@ -53,6 +56,10 @@ class ProviderActivity : AppCompatActivity() {
         // التعامل مع الضغط على أيقونة الإضافة
         imgAddIcon.setOnClickListener {
             showAddUserDialog()
+        }
+        settengIcon.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -70,6 +77,7 @@ class ProviderActivity : AppCompatActivity() {
                 if (email.isNotEmpty()) {
                     val intent = Intent(this, ClientDetailActivity::class.java)
                     intent.putExtra("clientEmail", email)
+
                     startActivity(intent)
                     Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
 
@@ -101,6 +109,7 @@ class ProviderActivity : AppCompatActivity() {
                         val email = clientSnapshot.child("email").getValue(String::class.java)
                         if (firstName != null && lastName != null && email != null) {
                             clientList.add("$firstName $lastName ($email)")
+
                         }
                     }
                     providerAdapter.notifyDataSetChanged()
