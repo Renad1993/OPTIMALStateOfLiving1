@@ -124,7 +124,7 @@ class SelectFeelingsActivity : AppCompatActivity() {
                         // Get the current date and time
                         val calendar = Calendar.getInstance()
                         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
                         val currentDate = dateFormat.format(calendar.time) // Get the current date
                         val currentTime = timeFormat.format(calendar.time) // Get the current time
 
