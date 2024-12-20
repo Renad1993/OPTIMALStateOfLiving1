@@ -51,6 +51,7 @@ class SettingsActivity : AppCompatActivity() {
             // إنشاء Dialog
             val dialog = android.app.AlertDialog.Builder(this)
             dialog.setTitle("Update User Settings")
+                .setCancelable(false)
 
             // إنشاء حقول الإدخال
             val layout = LinearLayout(this).apply {

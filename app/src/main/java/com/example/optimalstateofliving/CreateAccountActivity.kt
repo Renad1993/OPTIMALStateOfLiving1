@@ -63,10 +63,8 @@ class CreateAccountActivity : AppCompatActivity() {
                             databaseRef.child(userId).setValue(user).addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this, WelcomeActivity::class.java)
-                                    // Pass data to the following activity
-                                    intent.putExtra("FirstName", firstName)
-                                    intent.putExtra("LastName", lastName)
+                                    val intent = Intent(this, MainActivity::class.java)
+
                                     startActivity(intent)
                                     finish()
                                 } else {
