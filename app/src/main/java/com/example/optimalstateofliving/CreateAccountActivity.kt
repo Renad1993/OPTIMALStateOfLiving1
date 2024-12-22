@@ -55,7 +55,6 @@ class CreateAccountActivity : AppCompatActivity() {
                             "FirstName" to firstName,
                             "LastName" to lastName,
                             "email" to email,
-                            "password" to pass,
                             "role" to if (provider == "Yes") "provider" else "client"
                         )
 
