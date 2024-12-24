@@ -149,20 +149,30 @@ class SettingsActivity : AppCompatActivity() {
 
 
 
-
-
         // notification times
         notificationsButton.setOnClickListener {
             val calendar = Calendar.getInstance()
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)
-
+            val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
             // View TimePickerDialog for user
             val timePicker = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
                 // Set the time chosen by the user
                 calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
                 calendar.set(Calendar.MINUTE, selectedMinute)
                 calendar.set(Calendar.SECOND, 0)
+
+                //Create message based on user system
+                val message = if (is24HourFormat) {
+                    //24 hour format
+                    "Notification set for ${String.format("%02d", selectedHour)}:${String.format("%02d", selectedMinute)}"
+                } else {
+                    //12 hour format
+                    val formattedHour = if (selectedHour % 12 == 0) 12 else selectedHour % 12
+                    val amPm = if (selectedHour >= 12) "PM" else "AM"
+                    "Notification set for $formattedHour:${String.format("%02d", selectedMinute)} $amPm"
+                }
+
 
                 // Verification of the POST_NOTIFICATIONS 's authorization
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -181,8 +191,8 @@ class SettingsActivity : AppCompatActivity() {
                     scheduleNotification(calendar)
                 }
 
-                Toast.makeText(this, "Notification set for $selectedHour:$selectedMinute", Toast.LENGTH_SHORT).show()
-            }, hour, minute, true)
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }, hour, minute, is24HourFormat)
 
             timePicker.show()
         }
