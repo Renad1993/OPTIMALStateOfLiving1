@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.optimalstateofliving.models.HistoryItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
 
 import java.util.*
 class ClientDetailActivity : AppCompatActivity() {
@@ -153,11 +154,15 @@ class ClientDetailActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 historyList.clear() // Clear Old List
                 if (snapshot.exists()) {
+                    val timeFormat24 = SimpleDateFormat("HH:mm", Locale.getDefault()) // صيغة 24 ساعة
+                    val timeFormat12 = SimpleDateFormat("hh:mm a", Locale.getDefault())
                     for (timeEntry in snapshot.children) {
                         val time = timeEntry.key ?: continue // get the time
+                        val timein24= timeFormat24.parse(time)
+                        val timein12=timeFormat12.format(timein24!!)
                         val status = timeEntry.child("status").getValue(Int::class.java) ?: -1
                         val colorName = getColorName(status)
-                        historyList.add(HistoryItem(time, colorName, status))
+                        historyList.add(HistoryItem(timein12, colorName, status))
 
 
                     }
