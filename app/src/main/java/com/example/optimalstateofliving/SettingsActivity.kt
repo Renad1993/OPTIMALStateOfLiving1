@@ -15,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.EmailAuthProvider
@@ -47,9 +50,17 @@ class SettingsActivity : AppCompatActivity() {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val database = FirebaseDatabase.getInstance().getReference("_user")
 
-            // construct dialog
+            val title = TextView(this).apply {
+                text = "Update User Settings"
+                setPadding(20, 20, 20, 20)
+                textSize = 20f
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, android.R.color.holo_blue_dark)) // تغيير اللون
+                setTypeface(null, android.graphics.Typeface.BOLD)
+            }
+
+
             val dialog = android.app.AlertDialog.Builder(this)
-            dialog.setTitle("Update User Settings")
+                .setCustomTitle(title)
                 .setCancelable(false)
 
 
@@ -58,15 +69,21 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(16, 16, 16, 16)
             }
 
-            val nameInput = EditText(this).apply { hint = "Enter new First name (optional)" }
-            val LastName = EditText(this).apply { hint = "Enter new Last name (optional)" }
+            val nameInput = EditText(this).apply { hint = "Enter new First name (optional)"
+                setHintTextColor(ContextCompat.getColor(this@SettingsActivity, android.R.color.darker_gray))}
+            val LastName = EditText(this).apply { hint = "Enter new Last name (optional)"
+                setHintTextColor(ContextCompat.getColor(this@SettingsActivity, android.R.color.darker_gray))}
             val passwordInput = EditText(this).apply {
                 hint = "Enter new password (optional)"
+                setHintTextColor(ContextCompat.getColor(this@SettingsActivity, android.R.color.darker_gray))
                 inputType = android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
             }
             val currentPasswordInput = EditText(this).apply {
                 hint = "Enter current password"
+                setHintTextColor(ContextCompat.getColor(this@SettingsActivity, android.R.color.darker_gray))
                 inputType = android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
             }
 
             layout.apply {
@@ -144,7 +161,24 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
             dialog.setNegativeButton("Cancel", null)
-            dialog.show()
+
+            val alertDialog = dialog.create()
+            alertDialog.setOnShowListener {
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_green_dark)
+                )
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_red_dark)
+                )
+            }
+
+            alertDialog.window?.setBackgroundDrawable(
+                ColorDrawable(Color.parseColor("#4C585B"))
+            )
+
+            alertDialog.show()
+
+
         }
 
 
@@ -193,6 +227,16 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }, hour, minute, is24HourFormat)
+
+
+            timePicker.setOnShowListener {
+                timePicker.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_green_dark)
+                )
+                timePicker.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(
+                    ContextCompat.getColor(this, android.R.color.holo_red_dark)
+                )
+            }
 
             timePicker.show()
         }
